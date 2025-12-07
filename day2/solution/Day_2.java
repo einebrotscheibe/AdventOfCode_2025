@@ -13,15 +13,22 @@ public class Day_2 {
         long result = 0;
         Stack<Character> temp = new Stack<>();
 
+        Stack<Long> bannedNums = new Stack<>();
+
         for (List<Long> range : ranges){
            for (long n = range.getFirst(); n <= range.getLast(); n++){
-                String toTest = String.valueOf(n);
-                long len = toTest.length();
+               String toTest = String.valueOf(n);
+               long len = toTest.length();
 
                for (int q = 2; q <= len ; q++){
                    if (len % q != 0) {
                        continue;
+                   } else if (!bannedNums.isEmpty()) {
+                       if (bannedNums.peek() == n){
+                           continue;
+                       }
                    }
+
 
                    for (long i = 0; i <= len / q - 1; i++) {
                        temp.push(toTest.charAt((int) i));
@@ -31,7 +38,7 @@ public class Day_2 {
                    while (true) {
                        if (temp.isEmpty()) {
                            break;
-                       } else if (temp.pop().equals(toTest.charAt((int) (len / 2 + temp.size())))) {
+                       } else if (isTopStackMultipleTimesInString(temp, toTest, q)) {
                            continue;
                        } else {
                            isAtLeastDouble = false;
@@ -42,7 +49,9 @@ public class Day_2 {
                    if (isAtLeastDouble) {
                        System.out.println(n);
                        result += n;
+                       bannedNums.push(n);
                    }
+
                    temp.removeAllElements();
                }
 
@@ -55,8 +64,9 @@ public class Day_2 {
     public static boolean isTopStackMultipleTimesInString(Stack<Character> stack, String toTest, int q){
         Character testChar = stack.pop();
 
-        for (int mult = 0; mult < q; mult++){
-            if(testChar.equals(toTest.charAt((stack.size()+1) + toTest.length()/q))){
+        for (int mult = 1; mult < q; mult++){
+            boolean testi = testChar.equals(toTest.charAt(stack.size() + mult * toTest.length()/q));
+            if(testi){
                 continue;
             }
             return false;
@@ -82,4 +92,8 @@ public class Day_2 {
             "4145708930-4145757240,375283-509798,585093-612147,7921-11457,899998-1044449,3-19,35-64,244-657," +
             "5514-7852,9292905274-9292965269,287261640-287314275,70-129,86249864-86269107,5441357-5687039,2493-5147,"+
             "93835572-94041507,277109-336732,74668271-74836119,616692-643777,521461-548256,3131219357-3131417388";
+
+    static String testInput = "11-22,95-115,998-1012,1188511880-1188511890,222220-222224," +
+            "1698522-1698528,446443-446449,38593856-38593862,565653-565659,"+
+            "824824821-824824827,2121212118-2121212124";
 }
