@@ -1,5 +1,10 @@
+from pathlib import Path
+
+
 def readFileAndMakeList():
-    f = open(r"C:\ideas\AdventOfCode_2025\day4\input\inputData.txt")
+    current_dir = Path(__file__).parent
+    file_path = current_dir.parent / "input" / "inputData.txt"
+    f = open(file_path, "r")
     return f.read().split("\n")
 
 

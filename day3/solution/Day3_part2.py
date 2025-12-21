@@ -1,5 +1,10 @@
+from pathlib import Path
+
+
 def readFileAndMakeList():
-    f = open(r"C:\ideas\AdventOfCode_2025\day3\input\inputData.txt")
+    currentDir = Path(__file__).parent
+    filePath = currentDir.parent / "input" / "inputData.txt"
+    f = open(filePath, "r")
     return f.read().split("\n")
 
 def getFirstTopCharAndIndex (inputSequence):
